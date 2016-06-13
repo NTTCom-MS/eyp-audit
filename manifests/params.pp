@@ -6,13 +6,23 @@ class audit::params {
   {
     'redhat':
     {
+      $pkg_audit='audit'
+      $sysconfig=true
       case $::operatingsystemrelease
       {
-        /^6.*$/:
+        /^[5-6].*$/:
         {
-          $pkg_audit='audit'
+          $audit_file='/etc/audit/audit.rules'
+          $service_restart = '/etc/init.d/auditd restart'
+          $service_stop = '/etc/init.d/auditd stop'
         }
-        default: { fail("Unsupported RHEL/CentOS version! - $::operatingsystemrelease")  }
+        /^7.*$/:
+        {
+          $audit_file='/etc/audit/rules.d/eyp-audit.rules'
+          $service_restart = '/usr/libexec/initscripts/legacy-actions/auditd/restart'
+          $service_stop = '/usr/libexec/initscripts/legacy-actions/auditd/stop'
+        }
+        default: { fail("Unsupported RHEL/CentOS version! - ${::operatingsystemrelease}")  }
       }
 
     }
@@ -27,14 +37,18 @@ class audit::params {
             /^14.*$/:
             {
               $pkg_audit='auditd'
+              $sysconfig=false
+              $audit_file='/etc/audit/audit.rules'
+              $service_restart = '/etc/init.d/auditd restart'
+              $service_stop = '/etc/init.d/auditd stop'
             }
-            default: { fail("Unsupported Ubuntu version! - $::operatingsystemrelease")  }
+            default: { fail("Unsupported Ubuntu version! - ${::operatingsystemrelease}")  }
           }
         }
-        'Debian': { fail("Unsupported")  }
-        default: { fail("Unsupported Debian flavour!")  }
+        'Debian': { fail('Unsupported')  }
+        default: { fail('Unsupported Debian flavour!')  }
       }
     }
-    default: { fail("Unsupported OS!")  }
+    default: { fail('Unsupported OS!')  }
   }
 }
