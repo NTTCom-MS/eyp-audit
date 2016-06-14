@@ -60,7 +60,8 @@ class audit::params {
     {
       $pkg_audit='audit'
       $sysconfig=true
-      case $::operatingsystem {
+      case $::operatingsystem
+      {
         'SLES':
         {
           case $::operatingsystemrelease
@@ -71,6 +72,7 @@ class audit::params {
               $service_restart = '/etc/init.d/auditd restart'
               $service_stop = '/etc/init.d/auditd stop'
             }
+            default: { fail("Unsupported operating system ${::operatingsystem} ${::operatingsystemrelease}") }
           }
         }
         default: { fail("Unsupported operating system ${::operatingsystem}") }
