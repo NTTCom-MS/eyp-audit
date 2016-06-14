@@ -2,6 +2,13 @@
 #
 class audit::params {
 
+  case $::architecture
+  {
+    'x86_64': { $arch64=true }
+    'amd64': { $arch64=true }
+    default: {$arch64=false }
+  }
+
   case $::osfamily
   {
     'redhat':
@@ -47,6 +54,26 @@ class audit::params {
         }
         'Debian': { fail('Unsupported')  }
         default: { fail('Unsupported Debian flavour!')  }
+      }
+    }
+    'Suse':
+    {
+      $pkg_audit='audit'
+      $sysconfig=true
+      case $::operatingsystem {
+        'SLES':
+        {
+          case $::operatingsystemrelease
+          {
+            '11.3':
+            {
+              $audit_file='/etc/audit/audit.rules'
+              $service_restart = '/etc/init.d/auditd restart'
+              $service_stop = '/etc/init.d/auditd stop'
+            }
+          }
+        }
+        default: { fail("Unsupported operating system ${::operatingsystem}") }
       }
     }
     default: { fail('Unsupported OS!')  }
