@@ -1,8 +1,14 @@
 # == Class: audit
 #
 class audit (
-              $buffers='320',
-              $add_default_rules=true,
+              $buffers              = '320',
+              $add_default_rules    = true,
+              $manage_logrotate     = true,
+              $logrotate_rotate     = '4',
+              $logrotate_compress   = true,
+              $logrotate_missingok  = true,
+              $logrotate_notifempty = true,
+              $logrotate_frequency  = 'weekly',
             ) inherits audit::params {
 
   package { $audit::params::pkg_audit:
@@ -41,6 +47,16 @@ class audit (
     }
   }
 
-
-
+  if($manage_logrotate)
+  {
+    logrotate::logs { 'audit':
+      ensure        => present,
+      log           => [ '/var/log/audit/audit.log' ],
+      rotate        => $logrotate_rotate,
+      compress      => $logrotate_compress,
+      missingok     => $logrotate_missingok,
+      notifempty    => $logrotate_notifempty,
+      frequency     => $logrotate_frequency,
+    }
+  }
 }
