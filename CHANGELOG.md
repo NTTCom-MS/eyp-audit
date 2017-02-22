@@ -1,12 +1,16 @@
 # CHANGELOG
 
+## 0.1.10
+
+* added Ubuntu 16.04 support
+
 ## 0.1.9
 
 * removed **audit::tty** (moved to **pam::ttyaudit**)
 
 ## 0.1.8
 
-* added logrotate as a dependency
+* added **::logrotate** as a dependency
 
 ## 0.1.7
 
