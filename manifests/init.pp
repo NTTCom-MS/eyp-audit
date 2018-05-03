@@ -4,19 +4,27 @@
 #
 # 00 header
 # 01 default rules
-#
+# 02 default security rules
 # 10 fsrules
 # 11 syscallrules
 #
 class audit (
-              $buffers              = '320',
-              $add_default_rules    = true,
-              $manage_logrotate     = true,
-              $logrotate_rotate     = '4',
-              $logrotate_compress   = true,
-              $logrotate_missingok  = true,
-              $logrotate_notifempty = true,
-              $logrotate_frequency  = 'weekly',
+              $buffers                = '320',
+              $add_default_rules      = true,
+              $manage_logrotate       = true,
+              $logrotate_rotate       = '4',
+              $logrotate_compress     = true,
+              $logrotate_missingok    = true,
+              $logrotate_notifempty   = true,
+              $logrotate_frequency    = 'weekly',
+              $log_alter_time         = false,
+              $log_dac                = false,
+              $log_netconf_changes    = false,
+              $log_file_deletions     = false,
+              $log_export_media       = false,
+              $log_kmod_load_unload   = false,
+              $log_priv_commands      = false,
+              $log_changes_login_logs = false,
             ) inherits audit::params {
 
   package { $audit::params::pkg_audit:
@@ -52,6 +60,78 @@ class audit (
       target  => $audit::params::audit_file,
       order   => '01',
       content => template("${module_name}/default_rules.erb"),
+    }
+  }
+
+  if($log_alter_time)
+  {
+    concat::fragment{ "${audit::params::audit_file} log_alter_time":
+      target  => $audit::params::audit_file,
+      order   => '02a',
+      content => template("${module_name}/rules/clock_settime.erb"),
+    }
+  }
+
+  if($log_dac)
+  {
+    concat::fragment{ "${audit::params::audit_file} log_dac":
+      target  => $audit::params::audit_file,
+      order   => '02b',
+      content => template("${module_name}/rules/dac.erb"),
+    }
+  }
+
+  if($log_netconf_changes)
+  {
+    concat::fragment{ "${audit::params::audit_file} log_netconf_changes":
+      target  => $audit::params::audit_file,
+      order   => '02c',
+      content => template("${module_name}/rules/netconf.erb"),
+    }
+  }
+
+  if($log_file_deletions)
+  {
+    concat::fragment{ "${audit::params::audit_file} log_file_deletions":
+      target  => $audit::params::audit_file,
+      order   => '02d',
+      content => template("${module_name}/rules/file_deletions.erb"),
+    }
+  }
+
+  if($log_export_media)
+  {
+    concat::fragment{ "${audit::params::audit_file} log_export_media":
+      target  => $audit::params::audit_file,
+      order   => '02e',
+      content => template("${module_name}/rules/export_media.erb"),
+    }
+  }
+
+  if($log_kmod_load_unload)
+  {
+    concat::fragment{ "${audit::params::audit_file} log_kmod_load_unload":
+      target  => $audit::params::audit_file,
+      order   => '02f',
+      content => template("${module_name}/rules/kmod_load_unload.erb"),
+    }
+  }
+
+  if($log_priv_commands)
+  {
+    concat::fragment{ "${audit::params::audit_file} log_priv_commands":
+      target  => $audit::params::audit_file,
+      order   => '02g',
+      content => template("${module_name}/rules/priv_commands.erb"),
+    }
+  }
+
+  if($log_changes_login_logs)
+  {
+    concat::fragment{ "${audit::params::audit_file} log_changes_login_logs":
+      target  => $audit::params::audit_file,
+      order   => '02h',
+      content => template("${module_name}/rules/logins.erb"),
     }
   }
 
