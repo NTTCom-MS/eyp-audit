@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.2.0
+
+* **INCOMPATIBLE CHANGE**
+  - auditd.conf is now a managed file
+* added some relevant auditd.conf variables
+
 ## 0.1.16
 
 * added SLES 12.3 support

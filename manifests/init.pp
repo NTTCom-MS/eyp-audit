@@ -25,10 +25,27 @@ class audit (
               $log_kmod_load_unload   = false,
               $log_priv_commands      = false,
               $log_changes_login_logs = false,
+              $log_format             = 'RAW',
+              $tcp_listen_port        = undef,
+              $flush                  = $audit::params::flush_default,
+              $manage_auditconf       = true,
             ) inherits audit::params {
 
   package { $audit::params::pkg_audit:
     ensure => 'installed',
+  }
+
+  if($manage_auditconf)
+  {
+    file { '/etc/audit/auditd.conf':
+      ensure  => 'present',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0640',
+      content => template("${module_name}/auditdconf.erb"),
+      require => Package[$audit::params::pkg_audit],
+      notify  => Service['auditd']
+    }
   }
 
   service { 'auditd':

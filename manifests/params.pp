@@ -17,17 +17,21 @@ class audit::params {
       $sysconfig=true
       case $::operatingsystemrelease
       {
-        /^[5-6].*$/:
+        /^6.*$/:
         {
           $audit_file='/etc/audit/audit.rules'
           $service_restart = '/etc/init.d/auditd restart'
           $service_stop = '/etc/init.d/auditd stop'
+          $audispd_package=undef
+          $flush_default = 'INCREMENTAL'
         }
         /^7.*$/:
         {
           $audit_file='/etc/audit/rules.d/eyp-audit.rules'
           $service_restart = '/usr/libexec/initscripts/legacy-actions/auditd/restart'
           $service_stop = '/usr/libexec/initscripts/legacy-actions/auditd/stop'
+          $audispd_package='audispd-plugins'
+          $flush_default = 'INCREMENTAL_ASYNC'
         }
         default: { fail("Unsupported RHEL/CentOS version! - ${::operatingsystemrelease}")  }
       }
@@ -37,6 +41,9 @@ class audit::params {
     {
       $pkg_audit='auditd'
       $sysconfig=false
+
+      $audispd_package=undef
+
       case $::operatingsystem
       {
         'Ubuntu':
@@ -48,18 +55,21 @@ class audit::params {
               $audit_file='/etc/audit/audit.rules'
               $service_restart = '/etc/init.d/auditd restart'
               $service_stop = '/etc/init.d/auditd stop'
+              $flush_default = 'INCREMENTAL'
             }
             /^16.*$/:
             {
               $audit_file='/etc/audit/audit.rules'
               $service_restart = undef
               $service_stop = undef
+              $flush_default = 'INCREMENTAL'
             }
             /^18.*$/:
             {
               $audit_file='/etc/audit/rules.d/audit.rules'
               $service_restart = undef
               $service_stop = undef
+              $flush_default = 'INCREMENTAL_ASYNC'
             }
             default: { fail("Unsupported Ubuntu version! - ${::operatingsystemrelease}")  }
           }
@@ -72,6 +82,9 @@ class audit::params {
     {
       $pkg_audit='audit'
       $sysconfig=true
+
+      $audispd_package=undef
+
       case $::operatingsystem
       {
         'SLES':
