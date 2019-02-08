@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 0.2.2
+
+* added SLES 12.4 support
+
+## 0.2.1
+
+* added flag to remove auditd specific options
+
 ## 0.2.0
 
 * **INCOMPATIBLE CHANGE**
