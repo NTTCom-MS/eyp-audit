@@ -30,10 +30,20 @@ class audit (
               $flush                  = $audit::params::flush_default,
               $manage_auditconf       = true,
               $auditd_specifics       = true,
+              $log_dir                = '/var/log/audit',
             ) inherits audit::params {
 
   package { $audit::params::pkg_audit:
     ensure => 'installed',
+  }
+
+  file { $log_dir:
+    ensure  => 'directory',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0750',
+    require => Package[$audit::params::pkg_audit],
+    before  => File['/etc/audit/auditd.conf'],
   }
 
   if($manage_auditconf)
@@ -159,7 +169,7 @@ class audit (
 
     logrotate::logs { 'audit':
       ensure     => 'present',
-      log        => [ '/var/log/audit/audit.log' ],
+      log        => [ "${log_dir}/audit.log" ],
       rotate     => $logrotate_rotate,
       compress   => $logrotate_compress,
       missingok  => $logrotate_missingok,
