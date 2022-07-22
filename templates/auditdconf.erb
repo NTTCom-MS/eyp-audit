@@ -15,7 +15,11 @@ priority_boost = 4
 disp_qos = <%= @disp_qos %>
 dispatcher = /sbin/audispd
 name_format = NONE
-##name = mydomain
+<% if defined?(@name) -%>
+name = <%= @name %>
+<% else -%>
+  ##name = mydomain
+<% end -%>
 max_log_file_action = ROTATE
 space_left = 75
 space_left_action = SYSLOG

@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 0.2.11
+
+* Added variables:
+  - name_format
+  - name
+  - max_log_file_action
+  - space_left
+
+* Edited template for "name" value
+
 ## 0.2.10
 
 * bugfix **audit::customfile**
