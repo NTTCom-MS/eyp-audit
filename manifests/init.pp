@@ -33,6 +33,10 @@ class audit (
               $log_dir                = '/var/log/audit',
               $disp_qos               = 'lossy',
               $log_group              = 'root',
+              $name_format            = 'NONE',
+              $name		      = undef
+              $max_log_file_action    = 'ROTATE',
+              $space_left             = '75',
             ) inherits audit::params {
 
   package { $audit::params::pkg_audit:
