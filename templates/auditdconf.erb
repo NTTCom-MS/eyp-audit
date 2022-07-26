@@ -15,8 +15,8 @@ priority_boost = 4
 disp_qos = <%= @disp_qos %>
 dispatcher = /sbin/audispd
 name_format = NONE
-<% if defined?(@name) -%>
-name = <%= @name %>
+<% if defined?(@name_host) -%>
+name = <%= @name_host %>
 <% else -%>
   ##name = mydomain
 <% end -%>
