@@ -34,7 +34,7 @@ class audit (
               $disp_qos               = 'lossy',
               $log_group              = 'root',
               $name_format            = 'NONE',
-              $name		      = undef
+              $name		      = undef,
               $max_log_file_action    = 'ROTATE',
               $space_left             = '75',
             ) inherits audit::params {
