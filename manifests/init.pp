@@ -7,6 +7,7 @@
 # 02 default security rules
 # 10 fsrules
 # 11 syscallrules
+# 12 customrules
 #
 class audit (
               $buffers                = '320',
