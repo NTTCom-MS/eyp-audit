@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.12
+
+* reorder syscallrule template parameters
+
 ## 0.2.11
 
 * Added variables:
