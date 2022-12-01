@@ -38,6 +38,7 @@ class audit (
               $name_host              = undef,
               $max_log_file_action    = 'ROTATE',
               $space_left             = '75',
+              $audit_conf_group       = 'root',
             ) inherits audit::params {
 
   package { $audit::params::pkg_audit:
@@ -58,7 +59,7 @@ class audit (
     file { '/etc/audit/auditd.conf':
       ensure  => 'present',
       owner   => 'root',
-      group   => 'root',
+      group   => $audit_conf_group,
       mode    => '0640',
       content => template("${module_name}/auditdconf.erb"),
       require => Package[$audit::params::pkg_audit],
