@@ -2,7 +2,9 @@
 
 ## 0.2.13
 
-* adding audit.conf group ownership variable
+* adding group ownership variable
+   - audit_conf_group
+   - $audit_logdir_group
 
 ## 0.2.12
 
