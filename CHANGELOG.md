@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.13
+
+* adding audit.conf group ownership variable
+
 ## 0.2.12
 
 * reorder syscallrule template parameters
