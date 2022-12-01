@@ -39,6 +39,7 @@ class audit (
               $max_log_file_action    = 'ROTATE',
               $space_left             = '75',
               $audit_conf_group       = 'root',
+              $audit_logdir_group     = 'root',
             ) inherits audit::params {
 
   package { $audit::params::pkg_audit:
@@ -48,7 +49,7 @@ class audit (
   file { $log_dir:
     ensure  => 'directory',
     owner   => 'root',
-    group   => 'root',
+    group   => $audit_logdir_group,
     mode    => '0750',
     require => Package[$audit::params::pkg_audit],
     before  => File['/etc/audit/auditd.conf'],
